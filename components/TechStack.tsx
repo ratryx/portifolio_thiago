@@ -1,17 +1,23 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+
 import { languages, technologies } from '@/data/portfolio';
 import { fadeUp, staggerContainer } from '@/lib/motion';
+
 import PythonAnimatedIcon from './icons/PythonAnimatedIcon';
 import { techIcons } from './icons/techIcons';
 import SectionHeading from './SectionHeading';
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <div className="mb-5 flex items-center gap-3">
       <span className="h-px w-8 bg-red-500/55" />
-      <h3 className="font-mono text-xs uppercase tracking-[0.22em] text-ice-300">{children}</h3>
+
+      <h3 className="font-mono text-xs uppercase tracking-[0.22em] text-ice-300">
+        {children}
+      </h3>
     </div>
   );
 }
@@ -20,7 +26,10 @@ export default function TechStack() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="tecnologias" className="mx-auto max-w-6xl px-6 py-24 sm:px-10">
+    <section
+      id="tecnologias"
+      className="mx-auto max-w-6xl px-6 py-24 sm:px-10"
+    >
       <SectionHeading
         eyebrow="Stack"
         title="Linguagens e tecnologias"
@@ -55,7 +64,11 @@ export default function TechStack() {
                   ) : (
                     Icon && (
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.035] transition-transform duration-300 group-hover:scale-[1.04]">
-                        <Icon aria-hidden="true" className="h-6 w-6" color={iconDef.color} />
+                        <Icon
+                          aria-hidden={true}
+                          className="h-6 w-6"
+                          color={iconDef.color}
+                        />
                       </div>
                     )
                   )}
@@ -63,18 +76,23 @@ export default function TechStack() {
                   <div className="min-w-0">
                     <span
                       className={`font-mono text-[9px] uppercase tracking-[0.16em] ${
-                        language.level === 'Uso atual' ? 'text-red-300' : 'text-ice-400'
+                        language.level === 'Uso atual'
+                          ? 'text-red-300'
+                          : 'text-ice-400'
                       }`}
                     >
                       {language.level}
                     </span>
+
                     <h4 className="mt-1 font-display text-lg font-semibold text-ice-100">
                       {language.name}
                     </h4>
                   </div>
                 </div>
 
-                <p className="mt-4 text-sm leading-relaxed text-ice-400">{language.description}</p>
+                <p className="mt-4 text-sm leading-relaxed text-ice-400">
+                  {language.description}
+                </p>
               </motion.article>
             );
           })}
@@ -104,9 +122,14 @@ export default function TechStack() {
                 <div className="flex items-start justify-between gap-3">
                   {Icon && (
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.035] transition-transform duration-300 group-hover:scale-105">
-                      <Icon aria-hidden="true" className="h-5 w-5" color={iconDef.color} />
+                      <Icon
+                        aria-hidden={true}
+                        className="h-5 w-5"
+                        color={iconDef.color}
+                      />
                     </div>
                   )}
+
                   <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-ice-400">
                     {technology.category}
                   </span>
