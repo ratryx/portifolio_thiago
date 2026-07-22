@@ -1,6 +1,9 @@
 'use client';
 
-import { ShaderGradient, ShaderGradientCanvas } from '@shadergradient/react';
+import {
+  ShaderGradient,
+  ShaderGradientCanvas,
+} from '@shadergradient/react';
 import { useEffect, useState } from 'react';
 
 export default function ShaderBackgroundCanvas() {
@@ -8,43 +11,78 @@ export default function ShaderBackgroundCanvas() {
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const compactScreen = window.matchMedia('(max-width: 767px)');
+    const reducedMotionQuery = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    );
 
-    const updateRenderingMode = () => {
-      setCanRender(!reducedMotion.matches && !compactScreen.matches);
-    };
+    const compactScreenQuery = window.matchMedia(
+      '(max-width: 767px)'
+    );
 
-    const updateVisibility = () => {
-      setIsDocumentVisible(document.visibilityState === 'visible');
-    };
+    function updateRenderingMode() {
+      const shouldReduceMotion = reducedMotionQuery.matches;
+      const isCompactScreen = compactScreenQuery.matches;
+
+      setCanRender(!shouldReduceMotion && !isCompactScreen);
+    }
+
+    function updateVisibility() {
+      setIsDocumentVisible(
+        document.visibilityState === 'visible'
+      );
+    }
 
     updateRenderingMode();
     updateVisibility();
 
-    reducedMotion.addEventListener('change', updateRenderingMode);
-    compactScreen.addEventListener('change', updateRenderingMode);
-    document.addEventListener('visibilitychange', updateVisibility);
+    reducedMotionQuery.addEventListener(
+      'change',
+      updateRenderingMode
+    );
+
+    compactScreenQuery.addEventListener(
+      'change',
+      updateRenderingMode
+    );
+
+    document.addEventListener(
+      'visibilitychange',
+      updateVisibility
+    );
 
     return () => {
-      reducedMotion.removeEventListener('change', updateRenderingMode);
-      compactScreen.removeEventListener('change', updateRenderingMode);
-      document.removeEventListener('visibilitychange', updateVisibility);
+      reducedMotionQuery.removeEventListener(
+        'change',
+        updateRenderingMode
+      );
+
+      compactScreenQuery.removeEventListener(
+        'change',
+        updateRenderingMode
+      );
+
+      document.removeEventListener(
+        'visibilitychange',
+        updateVisibility
+      );
     };
   }, []);
 
-  if (!canRender) return null;
+  if (!canRender) {
+    return null;
+  }
 
   return (
     <ShaderGradientCanvas
-      style={{ position: 'absolute', inset: 0 }}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+      }}
       pixelDensity={0.8}
       fov={45}
-      gl={{
-        antialias: false,
-        alpha: false,
-        powerPreference: 'low-power',
-      }}
+      powerPreference="low-power"
     >
       <ShaderGradient
         control="props"
