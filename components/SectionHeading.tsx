@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { fadeUp } from '@/lib/motion';
 
 interface SectionHeadingProps {
   eyebrow: string;
@@ -9,24 +10,27 @@ interface SectionHeadingProps {
 }
 
 export default function SectionHeading({ eyebrow, title, subtitle }: SectionHeadingProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={fadeUp}
+      initial={reduceMotion ? false : 'hidden'}
+      whileInView="visible"
       viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="mb-12 max-w-2xl"
     >
-      <span className="font-mono text-xs uppercase tracking-[0.2em] text-ice-400">
-        {eyebrow}
-      </span>
-      <h2 className="mt-3 text-balance font-display text-3xl font-bold tracking-tight text-ice-100 sm:text-4xl">
+      <div className="flex items-center gap-3">
+        <span className="h-px w-8 bg-ice-400/50" />
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-ice-400">
+          {eyebrow}
+        </span>
+      </div>
+      <h2 className="mt-4 text-balance font-display text-3xl font-bold tracking-tight text-ice-100 sm:text-4xl">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-balance text-base leading-relaxed text-ice-400">
-          {subtitle}
-        </p>
+        <p className="mt-4 text-balance text-base leading-relaxed text-ice-400">{subtitle}</p>
       )}
     </motion.div>
   );

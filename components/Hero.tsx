@@ -1,102 +1,96 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-
-// The R3F canvas touches window/WebGL, so it must never be server-rendered.
-const PythonIcon3D = dynamic(() => import('./PythonIcon3D'), { ssr: false });
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowDownRight, MessageCircle } from 'lucide-react';
+import { profile } from '@/data/portfolio';
+import { fadeUp, staggerContainer } from '@/lib/motion';
+import PythonIcon3D from './PythonIcon3D';
 
 export default function Hero() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       id="inicio"
-      className="relative mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 pt-28 pb-16 sm:px-10"
+      className="relative mx-auto flex min-h-svh max-w-6xl items-center px-6 pb-20 pt-32 sm:px-10 lg:py-28"
     >
-      <div className="grid w-full grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-8">
-        <div>
+      <div className="pointer-events-none absolute left-[-16rem] top-24 h-[28rem] w-[28rem] rounded-full bg-white/[0.025] blur-3xl" />
+
+      <div className="grid w-full grid-cols-1 items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <motion.div
+          variants={staggerContainer}
+          initial={reduceMotion ? false : 'hidden'}
+          animate="visible"
+        >
           <motion.p
             variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={0}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-base-800/70 px-4 py-1.5 font-mono text-xs tracking-wide text-ice-300"
+            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-base-800/75 px-4 py-2 font-mono text-[11px] tracking-wide text-ice-300 shadow-soft"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
-            Disponível para projetos freelance
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400/80" />
+            </span>
+            {profile.availability}
           </motion.p>
 
           <motion.h1
             variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={1}
-            className="text-balance font-display text-4xl font-bold leading-[1.08] tracking-tight text-ice-100 sm:text-5xl lg:text-6xl"
+            className="text-balance font-display text-5xl font-bold leading-[0.98] tracking-[-0.045em] text-ice-100 sm:text-6xl lg:text-[4.5rem]"
           >
-            Thiago Bettin Ramos
+            Thiago
+            <br />
+            Bettin Ramos
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={2}
-            className="mt-3 font-display text-lg font-medium text-ice-300 sm:text-xl"
+            className="mt-5 font-display text-lg font-medium text-ice-200 sm:text-xl"
           >
-            Desenvolvedor Full Stack
+            {profile.role}
           </motion.p>
 
           <motion.p
             variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={3}
-            className="mt-6 max-w-xl text-balance text-base leading-relaxed text-ice-400 sm:text-lg"
+            className="mt-6 max-w-xl text-balance text-base leading-8 text-ice-400 sm:text-lg"
           >
-            Cursando o último semestre de Ciências da Computação, com forte
-            foco em back-end, automações, integrações de banco de dados e
-            arquitetura de sistemas — construindo soluções sólidas do banco de
-            dados até a última linha de código, tanto no back-end quanto no
-            front-end.
+            {profile.summary}
           </motion.p>
 
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={4}
-            className="mt-9 flex flex-wrap items-center gap-3"
-          >
+          <motion.div variants={fadeUp} className="mt-7 flex flex-wrap gap-2.5">
+            {profile.specialties.map((specialty) => (
+              <span
+                key={specialty}
+                className="rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ice-400"
+              >
+                {specialty}
+              </span>
+            ))}
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-3">
             <a
               href="#projetos"
-              className="rounded-full bg-ice-100 px-6 py-3 text-sm font-semibold text-base-900 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white"
+              className="group inline-flex items-center gap-2 rounded-full bg-ice-100 px-6 py-3 text-sm font-semibold text-base-900 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white"
             >
               Ver projetos
+              <ArrowDownRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
             </a>
             <a
               href="#contato"
-              className="rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-ice-100 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/[0.08]"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-semibold text-ice-100 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/[0.08]"
             >
+              <MessageCircle className="h-4 w-4" />
               Entrar em contato
             </a>
           </motion.div>
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={reduceMotion ? false : { opacity: 0, x: 34, scale: 0.96 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-white/[0.03] blur-3xl" />
           <PythonIcon3D />
         </motion.div>
       </div>
